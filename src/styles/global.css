@@ -10,3 +10,7 @@ a {
 video {
   display: block;
 }
+
+::-webkit-media-controls {
+  display: none !important;
+}

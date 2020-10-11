@@ -41,6 +41,13 @@ export default observer(function ({ roomStore }) {
     msgRef.current.scrollIntoView();
   });
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      sendMsg();
+    }
+  };
+
   return (
     <Box display="flex" flexDirection="column" className={classes.root}>
       <Box flex="1" overflow="auto" p={2}>
@@ -79,6 +86,7 @@ export default observer(function ({ roomStore }) {
             multiline
             variant="outlined"
             fullWidth
+            onKeyPress={handleKeyPress}
           ></TextField>
         </Box>
         <Box>

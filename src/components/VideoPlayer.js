@@ -8,11 +8,9 @@ const useStyles = makeStyles({
     bottom: 0,
     left: 0,
     right: 0,
-    '& video': {
-      objectFit: 'cover !important',
-    },
   },
   vidWrapper: {
+    backgroundColor: 'black',
     height: 0,
     width: '100%',
     paddingTop: '56.25%',

@@ -165,6 +165,7 @@ export default class RoomStore {
     track.once(
       'release',
       action(() => {
+        this.roomSession.unsubscribe([track.info.trackId]);
         delete this.allTracks[track.info.trackId];
       })
     );
