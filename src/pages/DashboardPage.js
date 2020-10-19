@@ -32,6 +32,7 @@ import {
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import VideoCallIcon from '@material-ui/icons/VideoCall';
 import DeleteIcon from '@material-ui/icons/Delete';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { grey } from '@material-ui/core/colors';
 import { useSnackbar } from 'notistack';
@@ -49,6 +50,10 @@ const useStyles = makeStyles((theme) => ({
     width: '80px',
     height: '80px',
     fontSize: '30px',
+  },
+  allRooms: {
+    overflowY: 'auto',
+    overflowX: 'hidden',
   },
   roomItem: {
     transition: '200ms',
@@ -92,6 +97,17 @@ export default function DashboardPage() {
     history.push(`/room/${roomId}`);
   };
 
+  const copyUrl = (roomId) => {
+    try {
+      navigator.clipboard.writeText(roomId);
+      enqueueSnackbar('复制成功');
+    } catch (_) {
+      enqueueSnackbar('复制失败，请手动在地址栏中复制链接。', {
+        variant: 'warning',
+      });
+    }
+  };
+
   const reJoinRoom = (roomId) => {
     history.push(`/room/${roomId}`);
   };
@@ -119,7 +135,7 @@ export default function DashboardPage() {
   const onDeleteRoom = async (roomId) => {
     await deleteRoom(roomId);
     setAllRooms(allRooms.filter((room) => room._id !== roomId));
-    enqueueSnackbar('会议记录删除', { variant: 'success' });
+    enqueueSnackbar('会议记录删除');
   };
 
   const theme = useTheme();
@@ -175,7 +191,7 @@ export default function DashboardPage() {
           </Box>
         </Box>
         <Divider />
-        <Box flex="1" overflow="auto">
+        <Box flex="1" className={classes.allRooms}>
           <Box color="text.secondary" my={2}>
             我创建的会议
           </Box>
@@ -188,7 +204,10 @@ export default function DashboardPage() {
                   key={roomInfo._id}
                   classes={{ root: classes.roomList }}
                 >
-                  <AccordionSummary color="transparent">
+                  <AccordionSummary
+                    color="transparent"
+                    expandIcon={<ExpandMoreIcon />}
+                  >
                     <Box>
                       <Typography variant="subtitle2">
                         {roomInfo.subject}
@@ -212,6 +231,9 @@ export default function DashboardPage() {
                         </Button>
                         <Button onClick={() => onCloseRoom(roomInfo._id)}>
                           结束会议
+                        </Button>
+                        <Button onClick={() => copyUrl(roomInfo._id)}>
+                          复制参会号码
                         </Button>
                       </ButtonGroup>
                     ) : (
